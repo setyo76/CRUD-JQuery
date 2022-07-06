@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar CRUD</title>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid blue 
+            
+        }
+    </style>
+</head>
+<body>
+    <h1> Data Siswa</h1>
+
+    <div id="page-form">
+        <form id="form">
+        <input type="text" id="nama" placeholder="nama"/>
+        <input type="text" id="alamat" placeholder="alamat"/>
+        <input type="number" id="umur" placeholder="umur"/>
+        <button type="submit"> Tambah Siswa</button>
+        </form>
+        <br>
+        <button id="btn-back">Back</button>
+    </div>
+    <div id="page-list">
+        <br/>
+        <button id="btn-add"> Tambah Siswa Baru</button>
+        <br>
+        <br>
+    <table>
+        <tr>
+            <th>No.</th>
+            <th>Nama Siswa</th>
+            <th>Alamat</th>
+            <th>Umur</th>
+            <th>Aksi</th>
+        </tr>
+        <!-- <tr>
+            <th>1</th>
+            <th>Andi</th>
+            <th>Bogor</th>
+            <th>16</th>
+        </tr> -->
+        <tbody id="body-table"></tbody>
+    </table>
+
+</div>
+    <script 
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" 
+    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer">
+    </script>
+
+    <script>
+       $(document).ready(function(){
+           $("#page-form").hide();
+
+           const seluruhSiswa = [
+            {
+               id : 1,
+               nama : "Andi",
+               alamat : "Bogor",
+               umur : 16,
+            },
+            {
+               id  : 2,
+               nama : "Budi",
+               alamat : "Bandung",
+               umur : 17,
+            },
+            {
+               id  : 3,
+               nama : "Candra",
+               alamat : "Bekasi",
+               umur : 15,
+            },
+            {
+               id  : 4,
+               nama : "Davis",
+               alamat : "Jakarta",
+               umur : 18,
+            },
+           ];
+
+           //Memakai looping agar lebih efektif dibanding cara manual
+           seluruhSiswa.forEach(function(item, index){
+               $("#body-table").append(`
+                <tr> 
+                    <td> ${index + 1}</td>
+                    <td> ${item.nama}</td>
+                    <td> ${item.alamat}</td>
+                    <td> ${item.umur}</td>
+                    <td> <button class="btn-delete" data-index="${index}">Pindah</button></td>
+                    </tr>
+               `);
+           })
+
+           $(".btn-delete").click(function(){
+               // Ngecheck indexnya ===> console.log($(this).attr("data-index"));
+           });
+            
+        //    Cara manual
+        //    $("#body-table").html(` 
+        //     <tr> 
+        //         <td> ${seluruhSiswa[0].id}</td>
+        //         <td> ${seluruhSiswa[0].nama}</td>
+        //         <td> ${seluruhSiswa[0].alamat}</td>
+        //         <td> ${seluruhSiswa[0].umur}</td>
+        //         </tr>
+        //         <td> ${seluruhSiswa[1].id}</td>
+        //         <td> ${seluruhSiswa[1].nama}</td>
+        //         <td> ${seluruhSiswa[1].alamat}</td>
+        //         <td> ${seluruhSiswa[1].umur}</td>
+        //         </tr>
+        //         <td> ${seluruhSiswa[2].id}</td>
+        //         <td> ${seluruhSiswa[2].nama}</td>
+        //         <td> ${seluruhSiswa[2].alamat}</td>
+        //         <td> ${seluruhSiswa[2].umur}</td>
+        //         </tr>
+        //    `)
+     
+
+       $("#btn-add").click(function(){
+           $("#page-list").hide();
+           $("#page-form").show();
+       });
+
+       $("#btn-back").click(function(){
+           $("#page-form").hide();
+           $("#page-list").show();
+       });
+
+       $("#form").submit(function(event){
+            event.preventDefault();
+            const siswa_baru= {
+                id:Math.floor(Math.random()*(99-1))+1,
+                nama:$("#nama").val(),
+                alamat:$("#alamat").val(),
+                umur:parseInt($("#umur").val()),
+            };
+
+            $("#nama").val(""), 
+            $("#alamat").val(""),
+            $("#umur").val(""),
+
+            seluruhSiswa.push(siswa_baru);
+            console.log(seluruhSiswa);
+            $("#page-form").hide();
+            $("#page-list").show();
+
+            $("#body-table").empty();
+        
+            seluruhSiswa.forEach(function(item, index){
+               $("#body-table").append(`
+                <tr> 
+                    <td> ${index+1}</td>
+                    <td> ${item.nama}</td>
+                    <td> ${item.alamat}</td>
+                    <td> ${item.umur}</td>
+                    </tr>
+               `);
+            });
+        });
+    });
+    </script>
+</body>
+</html>
